@@ -8,15 +8,28 @@ import {
   Timestamp,
   Firestore
 } from 'firebase/firestore';
-import firebaseConfig from '../firebase-applet-config.json';
+import staticFirebaseConfig from '../firebase-applet-config.json';
 import { Paste } from './types';
+
+// Build the configuration prioritizing environment variables, falling back to static config
+const firebaseConfig = {
+  apiKey: (import.meta.env.VITE_FIREBASE_API_KEY || staticFirebaseConfig.apiKey) as string,
+  authDomain: (import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || staticFirebaseConfig.authDomain) as string,
+  projectId: (import.meta.env.VITE_FIREBASE_PROJECT_ID || staticFirebaseConfig.projectId) as string,
+  storageBucket: (import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || staticFirebaseConfig.storageBucket) as string,
+  messagingSenderId: (import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || staticFirebaseConfig.messagingSenderId) as string,
+  appId: (import.meta.env.VITE_FIREBASE_APP_ID || staticFirebaseConfig.appId) as string,
+  firestoreDatabaseId: (import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || staticFirebaseConfig.firestoreDatabaseId || 'default') as string,
+  measurementId: (staticFirebaseConfig.measurementId || '') as string,
+};
 
 export const isFirebaseConfigured = 
   firebaseConfig && 
   firebaseConfig.apiKey && 
   firebaseConfig.apiKey !== '' && 
-  !firebaseConfig.apiKey.includes('placeholder') &&
+  !firebaseConfig.apiKey.toLowerCase().includes('placeholder') &&
   !firebaseConfig.apiKey.includes('YOUR_API_KEY');
+
 
 export enum OperationType {
   CREATE = 'create',
