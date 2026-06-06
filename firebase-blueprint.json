@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "Paste": {
+      "title": "Paste",
+      "description": "A single shared code paste",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The raw code string of the paste"
+        },
+        "language": {
+          "type": "string",
+          "description": "The programming language chosen for highlighting"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "UTC timestamp when the paste was created"
+        }
+      },
+      "required": ["code", "language", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/pastes/{pasteId}": {
+      "schema": "Paste",
+      "description": "Global collection containing all developer paste documents"
+    }
+  }
+}
